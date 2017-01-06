@@ -1,0 +1,147 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>迪欧办公-ECShop</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<!-- Place favicon.ico in the root directory -->
+
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/main.css">
+		<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+		<!-- --------------------------Ecshop import files -----------start-------------->
+
+		<link href="http://www.officedepot.com.cn/css/css.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="http://www.officedepot.com.cn/scripts/jquery-ui.css" />
+		<script type="text/javascript" src="http://www.officedepot.com.cn/scripts/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="http://www.officedepot.com.cn/scripts/jquery-ui.js"></script>
+		<script type="text/javascript" src="http://www.officedepot.com.cn/scripts/jquery.SuperSlide.js"></script>
+		<script type='text/javascript' src="http://www.officedepot.com.cn/scripts/gbkurl.js"></script>
+		<script type="text/javascript">
+			function MM_showHideLayers() { //v9.0
+			  var i,p,v,obj,args=MM_showHideLayers.arguments;
+			  for (i=0; i<(args.length-2); i+=3) 
+			  with (document) if (getElementById && ((obj=getElementById(args[i]))!=null)) { v=args[i+2];
+			    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+			    obj.visibility=v; }
+			}
+			
+			var r;
+			function mycallback(data)
+			{
+			                    r($.each(data, function(index, entry) {
+			                        return entry;
+			                    }));
+			}
+			
+			$(function() {
+				
+				/**
+				 * 搜索栏中按下回车键，默认直接进行搜索
+				 */
+				 $("#keyword").bind("keyup", function(event) {
+					 if (event.which == 13) {
+						 event.preventDefault();
+						 toSearch();
+					 }
+				 });
+					
+				/**
+				 * 搜索栏中单击鼠标，默认全选所有搜索关键字
+				 */
+				 $("#keyword").bind("focusin", function(event) {
+					 $(this).select();
+				 });
+			    
+				$("#keyword").autocomplete({
+			       source: function(request, response){
+			       		r = response;
+			            $.ajax({
+			            	contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			                url: "http://buy.officedepot.com.cn/search2?keyword="+encodeGbkURI($('#keyword').val())+"&date="+new Date().getTime(),
+			                dataType:"jsonp",
+			                type: 'GET', 
+			                jsonp:"callback",
+			                jsonpCallback: "mycallback",
+			                success:function(data){
+			                    response($.each(data, function(index, entry) {
+			                        return entry;
+			                    }));
+			                }
+			            });
+			        },
+			        select: function(event, ui) {
+			            $("#keyword").val(ui.item.label);
+			        },
+			        minLength: 1
+				}).data("ui-autocomplete")._renderItem = function (ul, item) {
+				
+					if(item.type==1)//1代表分类
+					{
+						return $("<li></li>").data("item.autocomplete", item)
+						.append("<a href='"+item.url+"' style='font-size: 12px;'><span style='float:right;color:#ababab;''>"+item.amount+ "</span>&nbsp;&nbsp;在<span style='color: red'>"+ item.label + "</span>分类中...</a>") 
+						.appendTo(ul);
+					}
+					else
+					{
+						return $("<li></li>").data("item.autocomplete", item)
+						.append("<a href='"+item.url+"' style='font-size: 12px;'><span style='float:right;color:#ababab;''>"+item.amount+ "</span>"+ item.label + "</a>") 
+						.appendTo(ul);
+					}
+					
+					
+					
+				};
+				
+			});
+			
+			function toSearch()
+			{
+				var q=$("#keyword").val();
+				if (q.indexOf("#") > -1) {
+					q = q.replace("#", "%23");
+				}
+				if(q!="")
+				{
+					var url='http://buy.officedepot.com.cn/search.html?m=10&q='+encodeGbkURI(q)+'&areaid=2';
+					window.location.href=url;
+				}
+			}
+		</script>
+
+		<!-- --------------------------Ecshop import files -----------end-------------->
+
+	</head>
+	<body>
+		<!--[if lte IE 9]>
+		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+		<![endif]-->
+
+		<!-- Add your site or application content here -->
+
+		<!--  ---------------------Index top----------------------------START----------------------->
+
+		<div class="indextop">
+			<div style="float:left;">
+				<span class="indexicohome"><a href="javascript:void(0)" onclick="gohome()" class="toplink">首页</a></span> | <span class="indexicokefu">客服电话：<b>400-610-6060</b></span> | <span class="indexicopinpai"><a id="pinpaihuizong" onclick="topinpaihuizong()" href="javascript:void(0)" class="toplink">品牌汇总</a></span>
+			</div>
+			<div style="text-align:right;float:right;">
+
+				<span class="indexlogin">欢迎您！ [<a href="/login.jsp" target="_parent" class="toplink">登录</a>] [<a href="/memberregister.html" target="_parent" class="toplink">免费注册</a>]
+					[<a href="/forgotpassword.html?method=toForgotPasswordPage" class="toplink">忘记密码</a>] </span>
+				| <span class="indexdingyue"><a onclick="toJifenhuanli()" href="javascript:void(0)" class="toplink">积分换礼</a></span>
+				<!--
+				| <span class="indexdingyue"><a href="http://www.officedepot.com.cn/news.html" class="toplink" target="_blank">行业资讯</a></span>
+				-->
+			</div>
+		</div>
+
+		<!--  ---------------------Index top----------------------------END----------------------->
+
+	</body>
+</html>

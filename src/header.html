@@ -1,0 +1,213 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>迪欧办公-ECShop</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<!-- Place favicon.ico in the root directory -->
+
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/main.css">
+		<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+		<!-- --------------------------Ecshop import files -----------start-------------->
+
+		<link href="http://www.officedepot.com.cn/css/css.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="http://www.officedepot.com.cn/scripts/jquery-ui.css" />
+		<script type="text/javascript" src="http://www.officedepot.com.cn/scripts/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="http://www.officedepot.com.cn/scripts/jquery-ui.js"></script>
+		<script type="text/javascript" src="http://www.officedepot.com.cn/scripts/jquery.SuperSlide.js"></script>
+		<script type='text/javascript' src="http://www.officedepot.com.cn/scripts/gbkurl.js"></script>
+		<script type="text/javascript">
+			function MM_showHideLayers() { //v9.0
+			  var i,p,v,obj,args=MM_showHideLayers.arguments;
+			  for (i=0; i<(args.length-2); i+=3) 
+			  with (document) if (getElementById && ((obj=getElementById(args[i]))!=null)) { v=args[i+2];
+			    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+			    obj.visibility=v; }
+			}
+			
+			var r;
+			function mycallback(data)
+			{
+			                    r($.each(data, function(index, entry) {
+			                        return entry;
+			                    }));
+			}
+			
+			$(function() {
+				
+				/**
+				 * 搜索栏中按下回车键，默认直接进行搜索
+				 */
+				 $("#keyword").bind("keyup", function(event) {
+					 if (event.which == 13) {
+						 event.preventDefault();
+						 toSearch();
+					 }
+				 });
+					
+				/**
+				 * 搜索栏中单击鼠标，默认全选所有搜索关键字
+				 */
+				 $("#keyword").bind("focusin", function(event) {
+					 $(this).select();
+				 });
+			    
+				$("#keyword").autocomplete({
+			       source: function(request, response){
+			       		r = response;
+			            $.ajax({
+			            	contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			                url: "http://buy.officedepot.com.cn/search2?keyword="+encodeGbkURI($('#keyword').val())+"&date="+new Date().getTime(),
+			                dataType:"jsonp",
+			                type: 'GET', 
+			                jsonp:"callback",
+			                jsonpCallback: "mycallback",
+			                success:function(data){
+			                    response($.each(data, function(index, entry) {
+			                        return entry;
+			                    }));
+			                }
+			            });
+			        },
+			        select: function(event, ui) {
+			            $("#keyword").val(ui.item.label);
+			        },
+			        minLength: 1
+				}).data("ui-autocomplete")._renderItem = function (ul, item) {
+				
+					if(item.type==1)//1代表分类
+					{
+						return $("<li></li>").data("item.autocomplete", item)
+						.append("<a href='"+item.url+"' style='font-size: 12px;'><span style='float:right;color:#ababab;''>"+item.amount+ "</span>&nbsp;&nbsp;在<span style='color: red'>"+ item.label + "</span>分类中...</a>") 
+						.appendTo(ul);
+					}
+					else
+					{
+						return $("<li></li>").data("item.autocomplete", item)
+						.append("<a href='"+item.url+"' style='font-size: 12px;'><span style='float:right;color:#ababab;''>"+item.amount+ "</span>"+ item.label + "</a>") 
+						.appendTo(ul);
+					}
+					
+					
+					
+				};
+				
+			});
+			
+			function toSearch()
+			{
+				var q=$("#keyword").val();
+				if (q.indexOf("#") > -1) {
+					q = q.replace("#", "%23");
+				}
+				if(q!="")
+				{
+					var url='http://buy.officedepot.com.cn/search.html?m=10&q='+encodeGbkURI(q)+'&areaid=2';
+					window.location.href=url;
+				}
+			}
+		</script>
+
+		<!-- --------------------------Ecshop import files -----------end-------------->
+
+	</head>
+	<body>
+		<!--[if lte IE 9]>
+		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+		<![endif]-->
+
+		<!-- Add your site or application content here -->
+
+		<!--  ---------------------Index top----------------------------START----------------------->
+
+		<div class="indextop">
+			<div style="float:left;">
+				<span class="indexicohome"><a href="javascript:void(0)" onclick="gohome()" class="toplink">首页</a></span> | <span class="indexicokefu">客服电话：<b>400-610-6060</b></span> | <span class="indexicopinpai"><a id="pinpaihuizong" onclick="topinpaihuizong()" href="javascript:void(0)" class="toplink">品牌汇总</a></span>
+			</div>
+			<div style="text-align:right;float:right;">
+
+				<span class="indexlogin">欢迎您！ [<a href="/login.jsp" target="_parent" class="toplink">登录</a>] [<a href="/memberregister.html" target="_parent" class="toplink">免费注册</a>]
+					[<a href="/forgotpassword.html?method=toForgotPasswordPage" class="toplink">忘记密码</a>] </span>
+				| <span class="indexdingyue"><a onclick="toJifenhuanli()" href="javascript:void(0)" class="toplink">积分换礼</a></span>
+				<!--
+				| <span class="indexdingyue"><a href="http://www.officedepot.com.cn/news.html" class="toplink" target="_blank">行业资讯</a></span>
+				-->
+			</div>
+		</div>
+
+		<!--  ---------------------Index top----------------------------END----------------------->
+
+		<!--  ---------------------Index header----------------------------START----------------------->
+
+		<div style="position:relative; z-index:2">
+			<table width="948" cellspacing="0" cellpadding="0" border="0" align="center">
+				<tbody>
+					<tr>
+						<td style="padding-top:7px" width="228" valign="top" align="left"><a href="http://www.officedepot.com.cn/buy/sh"><img src="http://img.officedepot.com.cn/odchina/logo.jpg" width="213" height="68" border="0"></a></td>
+						<td width="77">
+						<div class="indexdiqu1" onmouseover="MM_showHideLayers('menu15','','show')" onmouseout="MM_showHideLayers('menu15','','hide')">
+							华东
+							<br>
+							地区
+							<div id="menu15" style="position: absolute; margin-left: -9px; z-index: 1900; left: 50px; top: -28px; border: 1px solid rgb(208, 208, 208); background: rgb(255, 255, 255) none repeat scroll 0% 0%; width: 58px; visibility: hidden;" onmouseover="MM_showHideLayers('menu15','','show')" onmouseout="MM_showHideLayers('menu15','','hide')">
+								<a href="javascript:void(0)" onclick="MM_jumpMenu('parent','http://www.officedepot.com.cn/buy/bj/',0)" class="indexnewdiqu">华北区</a><a href="javascript:void(0)" class="indexnewdiqu">华东区</a><a href="javascript:void(0)" onclick="MM_jumpMenu('parent','http://www.officedepot.com.cn/buy/gz/',0)" class="indexnewdiqu">华南区</a>
+							</div>
+						</div></td><td width="440">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0">
+							<tbody>
+								<tr>
+									<td valign="bottom" height="60">
+									<table width="100%" cellspacing="0" cellpadding="0" border="0">
+										<tbody>
+											<tr>
+												<td class="indexinputbg">
+												<div class="ui-widget">
+													<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+													<input name="textfield" id="keyword" value="" autocomplete="off" class="tj_input ui-autocomplete-input" width="300px" type="text">
+												</div></td>
+												<td align="left"><a href="javascript:void(0)" onclick="toSearch()"><img src="http://www.officedepot.com.cn/indeximage/index2013_13.jpg" width="64" height="41"></a></td>
+											</tr>
+										</tbody>
+									</table></td>
+								</tr>
+								<tr>
+									<td class="indextag">热门搜索： <a href="http://buy.officedepot.com.cn/search.html?m=10&amp;q=%B4%F2%D3%A1%BB%FA&amp;areaid=2" class="taglink">打印机</a> 　<a href="http://buy.officedepot.com.cn/search.html?m=10&amp;q=%B8%B4%D3%A1%D6%BD&amp;areaid=2" class="taglink">复印纸</a> 　<a href="http://buy.officedepot.com.cn/search.html?m=10&amp;q=%C7%A9%D7%D6%B1%CA&amp;areaid=2" class="taglink">签字笔</a> 　<a href="http://buy.officedepot.com.cn/search.html?m=10&amp;q=%CE%F8%B9%C4&amp;areaid=2" class="taglink">硒鼓</a> 　<a href="http://buy.officedepot.com.cn/search.html?m=10&amp;q=2612&amp;areaid=2" class="taglink">2612</a> 　<a href="http://buy.officedepot.com.cn/search.html?m=10&amp;q=3m&amp;areaid=2" class="taglink">3M</a></td>
+								</tr>
+							</tbody>
+						</table></td>
+						<td style=" cursor:pointer;position:relative;" onmouseover="MM_showHideLayers('menu2','','show')" onmouseout="MM_showHideLayers('menu2','','hide')" width="100" valign="top" align="left">
+						<div onmouseout="this.style.background='url(http://www.officedepot.com.cn/indeximage/index2013_16.jpg) no-repeat left 28px'" onmouseover="this.style.background='url(http://www.officedepot.com.cn/indeximage/acc_22.jpg) no-repeat left 28px'" class="zhanghuout" style="background: transparent url(&quot;http://www.officedepot.com.cn/indeximage/index2013_16.jpg&quot;) no-repeat scroll left 28px;">
+							<a href="http://buy.officedepot.com.cn/my/myhome.html?method=showMyHome" class="zhanghua" id="zhanghua">我的账户</a>
+							<div class="zhanghu" id="menu2" onmouseover="MM_showHideLayers('menu2','','show')" onmouseout="MM_showHideLayers('menu2','','hide')" style="visibility: hidden;">
+								<ul>
+									<li>
+										<a href="http://buy.officedepot.com.cn/my/myhome.html?method=showMyOrders&amp;unprocess=0">订单查询</a>
+									</li>
+									<li>
+										<a href="http://buy.officedepot.com.cn/my/myhome.html?method=showMyShoppinglist">常购清单</a>
+									</li>
+									<li>
+										<a href="http://buy.officedepot.com.cn/my/myhome.html?method=showMyFavorites">我的收藏夹</a>
+									</li>
+									<li>
+										<a href="http://buy.officedepot.com.cn/my/myhome.html?method=showMyPoint">我的积分</a>
+									</li>
+								</ul>
+							</div>
+						</div></td>
+
+						<td style="padding-bottom:10px;" width="103" align="left"><iframe id="iframe_simplecart" style="margin-top:0px;padding-top:0px;" scrolling="no" src="http://buy.officedepot.com.cn/iframe/header2.jsp" width="102px" height="27px;" frameborder="0"></iframe></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!--  ---------------------Index header----------------------------END----------------------->
+
+	</body>
+</html>
